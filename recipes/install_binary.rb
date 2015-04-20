@@ -15,19 +15,13 @@
 # limitations under the License.
 #
 
-include_recipe 'libarchive::default'
+include_recipe 'ark::default'
 
-archive = remote_file Chef::Consul.cached_archive(node) do
+ark 'consul.zip' do
   source Chef::Consul.remote_url(node)
   checksum Chef::Consul.remote_checksum(node)
-end
-
-libarchive_file 'consul.zip' do
-  path archive.path
-  extract_to Chef::Consul.install_path(node)
-  extract_options :no_overwrite
-
-  action :extract
+  path Chef::Consul.install_path(node)
+  action :put
 end
 
 directory File.basename(Chef::Consul.active_binary(node)) do
