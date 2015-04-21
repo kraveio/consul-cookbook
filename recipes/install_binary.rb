@@ -17,11 +17,12 @@
 
 include_recipe 'ark::default'
 
-ark 'consul.zip' do
-  source Chef::Consul.remote_url(node)
+ark 'consul' do
+  url Chef::Consul.remote_url(node)
   checksum Chef::Consul.remote_checksum(node)
   path Chef::Consul.install_path(node)
-  action :put
+  creates 'consul'
+  action :dump
 end
 
 directory File.basename(Chef::Consul.active_binary(node)) do
